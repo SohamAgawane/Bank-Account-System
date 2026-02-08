@@ -1,4 +1,4 @@
-package bank.app;
+package app;
 
 import bank.account.Bank;
 import bank.account.BankAccount;
