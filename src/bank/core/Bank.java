@@ -1,4 +1,4 @@
-package bank.account;
+package bank.core;
 
 public class Bank {
     public static final String BANK_NAME = "Standard Chartered";

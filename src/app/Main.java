@@ -1,6 +1,6 @@
 package app;
 
-import bank.account.Bank;
+import bank.core.Bank;
 import bank.account.BankAccount;
 
 public class Main {
