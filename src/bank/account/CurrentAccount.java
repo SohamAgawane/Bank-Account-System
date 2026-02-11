@@ -17,4 +17,19 @@ public class CurrentAccount extends BankAccount {
     public double getOverdraftLimit() {
         return overdraftLimit;
     }
+
+    @Override
+    public void withdraw(double amount) {
+        if(amount > 0 && getBalance() + getOverdraftLimit() >= amount) {
+            deductAmount(amount);
+            System.out.println("Withdrawal successful (Overdraft allowed)");
+        } else {
+            System.out.println("Overdraft limit exceeded");
+        }
+    }
+
+    @Override
+    public double calculateInterest() {
+        return super.calculateInterest();
+    }
 }
