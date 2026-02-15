@@ -1,10 +1,12 @@
 package bank.account;
 
+import bank.transaction.Transaction;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-public class Account {
+public abstract class Account implements Transaction {
     private final int accountNumber;
     private String accountHolderName;
     private double balance;
@@ -37,6 +39,7 @@ public class Account {
         balance -= amount;
     }
 
+    @Override
     public void deposit(double amount) {
         if (amount > 0) {
             balance += amount;
@@ -45,17 +48,20 @@ public class Account {
         }
     }
 
-    public void withdraw(double amount) {
-        if (amount > 0 && balance >= amount) {
-            balance -= amount;
+    @Override
+    public void transfer(double amount, Transaction targetAccount) {
+        if(amount > 0 && balance >= amount) {
+            this.withdraw(amount);
+            targetAccount.deposit(amount);
         } else {
-            System.out.println("Insufficient balance");
+            System.out.println("Transfer failed");
         }
     }
 
-    public double calculateInterest() {
-        return 0;
-    }
+    @Override
+    public abstract boolean withdraw(double amount);
+
+    public abstract double calculateInterest();
 
     @Override
     public String toString() {
