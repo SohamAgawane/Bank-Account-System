@@ -1,13 +1,15 @@
 package app;
 
-import bank.account.Account;
-import bank.account.CurrentAccount;
-import bank.account.SavingsAccount;
-import bank.core.Bank;
-import bank.account.BankAccount;
+import bank.account.*;
+import bank.exception.InsufficientBalanceException;
+import core.Bank;
 
 public class Main {
+
     public static void main(String[] args) {
+
+        Bank bank = new Bank();
+
         Account savings = new SavingsAccount(
                 101,
                 "Soham",
@@ -22,18 +24,29 @@ public class Main {
                 2000
         );
 
-        System.out.println("---- Withdraw Tests ----");
+        // Add accounts
+        bank.addAccount(savings);
+        bank.addAccount(current);
 
-        savings.withdraw(2000);   // Normal withdraw
-        current.withdraw(6000);   // Uses overdraft
+        System.out.println("---- All Accounts ----");
+        bank.displayAllAccounts();
 
-        System.out.println("\n---- Interest ----");
+        System.out.println("\n---- Withdraw Test ----");
+        try {
+            savings.withdraw(2000);
+        } catch (InsufficientBalanceException e) {
+            System.out.println(e.getMessage());
+        }
 
-        System.out.println("Savings Interest: " + savings.calculateInterest());
-        System.out.println("Current Interest: " + current.calculateInterest());
+        System.out.println("\n---- Update Status ----");
+        bank.updateStatus(102, AccountStatus.SUSPENDED);
 
-        System.out.println("\n---- Final State ----");
-        System.out.println(savings);
-        System.out.println(current);
+        System.out.println("\n---- After Status Change ----");
+        bank.displayAllAccounts();
+
+        System.out.println("\n---- Remove Account 101 ----");
+        bank.removeAccount(101);
+
+        bank.displayAllAccounts();
     }
 }

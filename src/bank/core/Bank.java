@@ -1,21 +1,49 @@
-package bank.core;
+package core;
+
+import bank.account.Account;
+import bank.account.AccountStatus;
+
+import java.util.*;
 
 public class Bank {
-    public static final String BANK_NAME = "Standard Chartered";
-    public static final String IFSC_CODE = "SCBL0001234";
 
-    private static Bank bankInstance;
-    private Bank() {}
+    private List<Account> accounts = new ArrayList<>();
+    private Map<Integer, Account> accountMap = new HashMap<>();
+    private Vector<Account> legacyAccounts = new Vector<>();
 
-    public static Bank getInstance() {
-        if(bankInstance == null) {
-            bankInstance = new Bank();
-        }
-        return bankInstance;
+    // Add account
+    public void addAccount(Account account) {
+        accounts.add(account);
+        accountMap.put(account.getAccountNumber(), account);
+        legacyAccounts.add(account);
     }
 
-    public void printBankDetails() {
-        System.out.println("Bank Name: " + BANK_NAME);
-        System.out.println("IFSC Code: " + IFSC_CODE);
+    // Remove account
+    public void removeAccount(int accountNumber) {
+        Account acc = accountMap.remove(accountNumber);
+        if (acc != null) {
+            accounts.remove(acc);
+            legacyAccounts.remove(acc);
+        }
+    }
+
+    // Find account
+    public Account findAccount(int accountNumber) {
+        return accountMap.get(accountNumber);
+    }
+
+    // Update status
+    public void updateStatus(int accountNumber, AccountStatus status) {
+        Account acc = accountMap.get(accountNumber);
+        if (acc != null) {
+            acc.setStatus(status);
+        }
+    }
+
+    // Display all accounts
+    public void displayAllAccounts() {
+        for (Account acc : accounts) {
+            System.out.println(acc);
+        }
     }
 }
